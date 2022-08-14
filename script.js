@@ -3,11 +3,16 @@ const counterElement = document.getElementById('counter');
 const incrementElement = document.getElementById('increment');
 const decrementElement = document.getElementById('decrement');
 const resetElement = document.getElementById('reset');
+const addElement = document.getElementById('add');
+
+
+
 
 // initial value 
 
 const initialState = {
     value: 0,
+    id: 0,
 }
 
 // reducer function 
@@ -31,6 +36,13 @@ function createReducer(state = initialState, action) {
             value: state.value * 0,
         }
     }
+    else if (action.type === 'add') {
+        // document.body.appendChild(newDiv);
+        return {
+            ...state,
+            id: state.id + 1,
+        }
+    }
     else {
         return state;
     }
@@ -43,6 +55,16 @@ const store = Redux.createStore(createReducer);
 const render = () => {
     const state = store.getState();
     counterElement.innerText = state.value.toString();
+    if (state.id) {
+        const newDiv = document.createElement('div');
+        newDiv.style.width = '100px';
+        newDiv.style.height = '100px';
+        newDiv.style.marginTop = '10px';
+
+        newDiv.style.background = 'green';
+        newDiv.innerText = 'green green green';
+        document.body.appendChild(newDiv);
+    }
 }
 store.subscribe(render);
 
@@ -63,5 +85,11 @@ decrementElement.addEventListener('click', () => {
 resetElement.addEventListener('click', () => {
     store.dispatch({
         type: 'reset',
+    })
+})
+
+addElement.addEventListener('click', () => {
+    store.dispatch({
+        type: 'add',
     })
 })
